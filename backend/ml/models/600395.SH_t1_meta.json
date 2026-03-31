@@ -1,0 +1,215 @@
+{
+  "symbol": "600395.SH",
+  "horizon": "t1",
+  "accuracy": 0.4468,
+  "baseline": 0.5106,
+  "precision": 0.463,
+  "recall": 0.5208,
+  "f1": 0.4902,
+  "train_size": 375,
+  "test_size": 94,
+  "train_start": "2024-04-18",
+  "train_end": "2025-11-04",
+  "test_start": "2025-11-05",
+  "test_end": "2026-03-26",
+  "train_stratification": {
+    "board": {
+      "main_board": {
+        "count": 375,
+        "ratio": 1.0
+      }
+    },
+    "cap": {
+      "small_cap": {
+        "count": 375,
+        "ratio": 1.0
+      }
+    },
+    "liquidity": {
+      "illiquid": {
+        "count": 375,
+        "ratio": 1.0
+      }
+    }
+  },
+  "test_stratification": {
+    "board": {
+      "main_board": {
+        "count": 94,
+        "ratio": 1.0
+      }
+    },
+    "cap": {
+      "small_cap": {
+        "count": 94,
+        "ratio": 1.0
+      }
+    },
+    "liquidity": {
+      "illiquid": {
+        "count": 94,
+        "ratio": 1.0
+      }
+    }
+  },
+  "test_stratified_metrics": {
+    "board": {
+      "main_board": {
+        "count": 94,
+        "ratio": 1.0,
+        "accuracy": 0.4468,
+        "baseline": 0.5106,
+        "actual_up_ratio": 0.5106,
+        "predicted_up_ratio": 0.5745
+      }
+    },
+    "cap": {
+      "small_cap": {
+        "count": 94,
+        "ratio": 1.0,
+        "accuracy": 0.4468,
+        "baseline": 0.5106,
+        "actual_up_ratio": 0.5106,
+        "predicted_up_ratio": 0.5745
+      }
+    },
+    "liquidity": {
+      "illiquid": {
+        "count": 94,
+        "ratio": 1.0,
+        "accuracy": 0.4468,
+        "baseline": 0.5106,
+        "actual_up_ratio": 0.5106,
+        "predicted_up_ratio": 0.5745
+      }
+    }
+  },
+  "feature_cols": [
+    "n_articles",
+    "n_relevant",
+    "n_positive",
+    "n_negative",
+    "n_neutral",
+    "sentiment_score",
+    "relevance_ratio",
+    "positive_ratio",
+    "negative_ratio",
+    "has_news",
+    "sentiment_score_3d",
+    "sentiment_score_5d",
+    "sentiment_score_10d",
+    "positive_ratio_3d",
+    "positive_ratio_5d",
+    "positive_ratio_10d",
+    "negative_ratio_3d",
+    "negative_ratio_5d",
+    "negative_ratio_10d",
+    "news_count_3d",
+    "news_count_5d",
+    "news_count_10d",
+    "sentiment_momentum_3d",
+    "ret_1d",
+    "ret_3d",
+    "ret_5d",
+    "ret_10d",
+    "volatility_5d",
+    "volatility_10d",
+    "volume_ratio_5d",
+    "gap",
+    "ma5_vs_ma20",
+    "rsi_14",
+    "day_of_week",
+    "amount_ratio_5d",
+    "amount_percentile_20d",
+    "turnover_rate_5d",
+    "turnover_rate_change",
+    "circ_mv_log",
+    "total_mv_log",
+    "cap_bucket_id",
+    "calendar_gap_days",
+    "resumed_after_halt",
+    "recent_halt_resume_5d",
+    "benchmark_ret_1d",
+    "benchmark_ret_3d",
+    "benchmark_ret_5d",
+    "benchmark_ret_10d",
+    "benchmark_volatility_5d",
+    "benchmark_volatility_10d",
+    "excess_strength_5d",
+    "excess_strength_10d",
+    "mkt_articles",
+    "mkt_positive",
+    "mkt_negative",
+    "mkt_tickers_active",
+    "mkt_sentiment",
+    "mkt_positive_ratio",
+    "mkt_sentiment_3d",
+    "mkt_sentiment_5d",
+    "mkt_momentum",
+    "industry_articles",
+    "industry_positive",
+    "industry_negative",
+    "industry_tickers_active",
+    "industry_sentiment",
+    "industry_positive_ratio",
+    "industry_sentiment_3d",
+    "industry_sentiment_5d",
+    "industry_momentum",
+    "board_bucket_id",
+    "is_st",
+    "price_limit_ratio",
+    "is_limit_up",
+    "is_limit_down",
+    "limit_up_count_3d",
+    "limit_up_count_5d",
+    "limit_up_count_10d",
+    "limit_down_count_3d",
+    "limit_down_count_5d",
+    "limit_down_count_10d"
+  ],
+  "target_definition": "excess_return_vs_benchmark",
+  "benchmark_symbol": "000001.SH",
+  "top_features": [
+    {
+      "name": "sentiment_score_3d",
+      "importance": 0.0352
+    },
+    {
+      "name": "n_positive",
+      "importance": 0.0312
+    },
+    {
+      "name": "positive_ratio_3d",
+      "importance": 0.0266
+    },
+    {
+      "name": "mkt_articles",
+      "importance": 0.0233
+    },
+    {
+      "name": "mkt_positive_ratio",
+      "importance": 0.0222
+    },
+    {
+      "name": "turnover_rate_change",
+      "importance": 0.0221
+    },
+    {
+      "name": "n_neutral",
+      "importance": 0.022
+    },
+    {
+      "name": "positive_ratio",
+      "importance": 0.022
+    },
+    {
+      "name": "news_count_10d",
+      "importance": 0.0212
+    },
+    {
+      "name": "calendar_gap_days",
+      "importance": 0.0209
+    }
+  ],
+  "trained_at": "2026-03-29T15:22:32.225462"
+}

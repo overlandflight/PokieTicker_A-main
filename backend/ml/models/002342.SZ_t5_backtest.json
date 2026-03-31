@@ -1,0 +1,1457 @@
+{
+  "symbol": "002342.SZ",
+  "horizon": "t5",
+  "n_folds": 5,
+  "total_predictions": 264,
+  "overall_accuracy": 0.5076,
+  "overall_baseline": 0.5227,
+  "overall_precision": 0.4859,
+  "overall_recall": 0.5476,
+  "overall_f1": 0.5149,
+  "prediction_stratification": {
+    "board": {
+      "main_board": {
+        "count": 264,
+        "ratio": 1.0,
+        "accuracy": 0.5076,
+        "baseline": 0.5227,
+        "actual_up_ratio": 0.4773,
+        "predicted_up_ratio": 0.5379
+      }
+    },
+    "cap": {
+      "small_cap": {
+        "count": 264,
+        "ratio": 1.0,
+        "accuracy": 0.5076,
+        "baseline": 0.5227,
+        "actual_up_ratio": 0.4773,
+        "predicted_up_ratio": 0.5379
+      }
+    },
+    "liquidity": {
+      "illiquid": {
+        "count": 264,
+        "ratio": 1.0,
+        "accuracy": 0.5076,
+        "baseline": 0.5227,
+        "actual_up_ratio": 0.4773,
+        "predicted_up_ratio": 0.5379
+      }
+    }
+  },
+  "folds": [
+    {
+      "fold": 1,
+      "train_size": 200,
+      "test_size": 52,
+      "test_start": "2025-02-19",
+      "test_end": "2025-05-07",
+      "accuracy": 0.4615,
+      "baseline": 0.6154,
+      "precision": 0.5769,
+      "recall": 0.4688,
+      "f1": 0.5172
+    },
+    {
+      "fold": 2,
+      "train_size": 252,
+      "test_size": 52,
+      "test_start": "2025-05-08",
+      "test_end": "2025-07-21",
+      "accuracy": 0.5769,
+      "baseline": 0.5,
+      "precision": 0.5588,
+      "recall": 0.7308,
+      "f1": 0.6333
+    },
+    {
+      "fold": 3,
+      "train_size": 304,
+      "test_size": 52,
+      "test_start": "2025-07-22",
+      "test_end": "2025-10-09",
+      "accuracy": 0.5192,
+      "baseline": 0.6346,
+      "precision": 0.4286,
+      "recall": 0.9474,
+      "f1": 0.5902
+    },
+    {
+      "fold": 4,
+      "train_size": 356,
+      "test_size": 52,
+      "test_start": "2025-10-10",
+      "test_end": "2025-12-22",
+      "accuracy": 0.5192,
+      "baseline": 0.6154,
+      "precision": 0.4074,
+      "recall": 0.55,
+      "f1": 0.4681
+    },
+    {
+      "fold": 5,
+      "train_size": 408,
+      "test_size": 56,
+      "test_start": "2025-12-23",
+      "test_end": "2026-03-20",
+      "accuracy": 0.4643,
+      "baseline": 0.5179,
+      "precision": 0.4615,
+      "recall": 0.2069,
+      "f1": 0.2857
+    }
+  ],
+  "daily_predictions": [
+    {
+      "date": "2025-02-19",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-02-20",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-02-21",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-02-24",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-02-25",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-02-26",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-02-27",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-02-28",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-03",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-04",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-05",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-06",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-07",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-10",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-11",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-12",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-13",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-14",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-17",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-18",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-19",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-20",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-21",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-03-24",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-03-25",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-03-26",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-03-27",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-03-28",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-03-31",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-01",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-02",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-03",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-07",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-08",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-09",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-10",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-11",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-14",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-15",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-16",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-17",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-18",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-21",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-22",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-23",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-04-24",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-25",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-28",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-29",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-04-30",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-06",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-07",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-08",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-05-09",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-12",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-13",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-05-14",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-05-15",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-05-16",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-05-19",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-05-20",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-05-21",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-22",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-23",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-26",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-27",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-28",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-29",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-05-30",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-03",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-04",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-05",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-06",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-09",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-10",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-11",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-12",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-13",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-16",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-17",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-18",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-06-19",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-20",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-23",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-24",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-25",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-26",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-27",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-06-30",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-07-01",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-07-02",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-07-03",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-04",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-07-07",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-07-08",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-09",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-10",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-11",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-14",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-15",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-07-16",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-17",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-18",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-21",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-22",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-23",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-24",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-25",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-28",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-07-29",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-07-30",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-07-31",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-01",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-04",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-05",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-06",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-07",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-08",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-11",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-12",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-13",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-14",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-08-15",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-18",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-19",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-20",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-21",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-22",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-25",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-26",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-27",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-28",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-08-29",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-01",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-02",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-03",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-09-04",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-09-05",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-08",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-09",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-09-10",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-11",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-12",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-15",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-16",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-17",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-18",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-19",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-22",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-23",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-24",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-09-25",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-09-26",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-09-29",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-09-30",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-10-09",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-10-10",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-10-13",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-10-14",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-10-15",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-10-16",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-17",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-10-20",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-21",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-22",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-23",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-24",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-27",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-28",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-29",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-10-30",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-10-31",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-03",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-04",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-05",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-06",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-07",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-10",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-11-11",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-12",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-11-13",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-11-14",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-17",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-18",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-19",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-20",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-21",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-11-24",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-25",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-11-26",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-11-27",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-11-28",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-01",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-02",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-03",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-04",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-05",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-08",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-09",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-10",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-11",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-12",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-15",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-16",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2025-12-17",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-18",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-19",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-22",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-23",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-24",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-25",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-26",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-29",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-30",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2025-12-31",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-05",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-06",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-07",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-08",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-09",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-12",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-01-13",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-01-14",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2026-01-15",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-01-16",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-19",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-20",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-21",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-22",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-23",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-26",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-27",
+      "predicted": 1,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-28",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-29",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-01-30",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-02-02",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-02-03",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-02-04",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-02-05",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-06",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-09",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-10",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-11",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-12",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-13",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-24",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-25",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-26",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-02-27",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-02",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-03",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-03-04",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-05",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-06",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-09",
+      "predicted": 0,
+      "actual": 1
+    },
+    {
+      "date": "2026-03-10",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-11",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-12",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-13",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-16",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-17",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-18",
+      "predicted": 1,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-19",
+      "predicted": 0,
+      "actual": 0
+    },
+    {
+      "date": "2026-03-20",
+      "predicted": 0,
+      "actual": 1
+    }
+  ],
+  "theoretical_long_only": {
+    "trades": 0,
+    "win_rate": null,
+    "avg_return_pct": null,
+    "total_return_pct": null
+  },
+  "tradable_long_only": {
+    "trades": 0,
+    "win_rate": null,
+    "avg_return_pct": null,
+    "total_return_pct": null,
+    "blocked_limit_up_entries": 0,
+    "blocked_low_liquidity_entries": 0,
+    "blocked_halt_resume_entries": 0,
+    "deferred_limit_down_exits": 0,
+    "unresolved_limit_down_exits": 0,
+    "unresolved_halt_overlap_trades": 0,
+    "skipped_trades": 0,
+    "constraints": {
+      "min_entry_amount_k": 20000.0,
+      "min_entry_turnover_rate_pct": 0.5,
+      "max_exit_extension_days": 5,
+      "halt_gap_days": 10
+    }
+  },
+  "trade_stratification": {
+    "board": {},
+    "cap": {},
+    "liquidity": {}
+  }
+}
