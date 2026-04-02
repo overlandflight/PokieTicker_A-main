@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 import os
+import re
 import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -37,6 +38,22 @@ def _as_int(value: Any, default: int) -> int:
         return default
 
 
+def _parse_mysql_url(url: str) -> dict[str, str]:
+    """解析 mysql://user:pass@host:port/db 格式的连接字符串"""
+    pattern = r"mysql://([^:]+):([^@]+)@([^:]+):(\d+)/(.+)"
+    match = re.match(pattern, url)
+    if not match:
+        raise ValueError(f"Invalid MySQL URL: {url}")
+    user, password, host, port, database = match.groups()
+    return {
+        "host": host,
+        "port": port,
+        "user": user,
+        "password": password,
+        "database": database,
+    }
+
+
 @dataclass(slots=True)
 class Settings:
     config_path: Path
@@ -56,44 +73,36 @@ class Settings:
 
     @classmethod
     def from_config(cls, cfg: dict[str, Any], errors: list[str]) -> "Settings":
-        # 优先从环境变量读取
-        # MySQL (Railway 常用变量名)
-        mysql_host = (
-            os.environ.get("MYSQL_HOST") or
-            os.environ.get("DB_HOST") or
-            os.environ.get("RAILWAY_MYSQL_HOST")
-        )
-        mysql_port = (
-            os.environ.get("MYSQL_PORT") or
-            os.environ.get("DB_PORT") or
-            "3306"
-        )
-        mysql_user = (
-            os.environ.get("MYSQL_USER") or
-            os.environ.get("DB_USER") or
-            os.environ.get("RAILWAY_MYSQL_USER")
-        )
-        mysql_password = (
-            os.environ.get("MYSQL_PASSWORD") or
-            os.environ.get("DB_PASSWORD") or
-            os.environ.get("RAILWAY_MYSQL_PASSWORD")
-        )
-        mysql_database = (
-            os.environ.get("MYSQL_DATABASE") or
-            os.environ.get("DB_NAME") or
-            os.environ.get("RAILWAY_MYSQL_DATABASE")
-        )
-        mysql_charset = os.environ.get("MYSQL_CHARSET") or "utf8mb4"
+        # ---------- 1. 数据库配置：优先环境变量 ----------
+        mysql_host = None
+        mysql_port = None
+        mysql_user = None
+        mysql_password = None
+        mysql_database = None
+        mysql_charset = "utf8mb4"
 
-        # DeepSeek
-        deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY")
-        deepseek_base_url = os.environ.get("DEEPSEEK_BASE_URL")
-        deepseek_model = os.environ.get("DEEPSEEK_MODEL")
+        # 1.1 尝试从 DATABASE_URL 或 MYSQL_URL 解析
+        db_url = os.environ.get("DATABASE_URL") or os.environ.get("MYSQL_URL")
+        if db_url:
+            try:
+                parsed = _parse_mysql_url(db_url)
+                mysql_host = parsed["host"]
+                mysql_port = parsed["port"]
+                mysql_user = parsed["user"]
+                mysql_password = parsed["password"]
+                mysql_database = parsed["database"]
+            except Exception as e:
+                errors.append(f"Failed to parse DATABASE_URL: {e}")
 
-        # Polygon
-        polygon_api_key = os.environ.get("POLYGON_API_KEY")
+        # 1.2 如果没有 DATABASE_URL，则尝试单独的环境变量
+        if not mysql_host:
+            mysql_host = os.environ.get("MYSQL_HOST") or os.environ.get("DB_HOST")
+            mysql_port = os.environ.get("MYSQL_PORT") or os.environ.get("DB_PORT")
+            mysql_user = os.environ.get("MYSQL_USER") or os.environ.get("DB_USER")
+            mysql_password = os.environ.get("MYSQL_PASSWORD") or os.environ.get("DB_PASSWORD")
+            mysql_database = os.environ.get("MYSQL_DATABASE") or os.environ.get("DB_NAME") or os.environ.get("RAILWAY_MYSQL_DATABASE")
 
-        # 如果环境变量未提供，再使用 YAML 配置（仅用于本地开发）
+        # 1.3 如果环境变量仍缺失，则从 YAML 读取（本地开发）
         if not mysql_host:
             mysql_cfg = _section(cfg, "mysql")
             mysql_host = mysql_cfg.get("host", "127.0.0.1")
@@ -103,12 +112,19 @@ class Settings:
             mysql_database = mysql_cfg.get("database", "pokieticker")
             mysql_charset = mysql_cfg.get("charset", "utf8mb4")
 
+        # ---------- 2. DeepSeek 配置 ----------
+        deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY")
+        deepseek_base_url = os.environ.get("DEEPSEEK_BASE_URL")
+        deepseek_model = os.environ.get("DEEPSEEK_MODEL")
+
         if not deepseek_api_key:
             deepseek_cfg = _section(cfg, "deepseek")
             deepseek_api_key = deepseek_cfg.get("api_key", "")
             deepseek_base_url = deepseek_cfg.get("base_url", "https://api.deepseek.com")
             deepseek_model = deepseek_cfg.get("model", "deepseek-reasoner")
 
+        # ---------- 3. Polygon 配置（可选） ----------
+        polygon_api_key = os.environ.get("POLYGON_API_KEY")
         if not polygon_api_key:
             polygon_cfg = _section(cfg, "polygon")
             polygon_api_key = polygon_cfg.get("api_key", "")
