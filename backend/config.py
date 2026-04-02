@@ -57,20 +57,43 @@ class Settings:
     @classmethod
     def from_config(cls, cfg: dict[str, Any], errors: list[str]) -> "Settings":
         # 优先从环境变量读取
-        # MySQL
-        mysql_host = os.environ.get("MYSQL_HOST") or os.environ.get("DB_HOST")
-        mysql_port = os.environ.get("MYSQL_PORT") or os.environ.get("DB_PORT")
-        mysql_user = os.environ.get("MYSQL_USER") or os.environ.get("DB_USER")
-        mysql_password = os.environ.get("MYSQL_PASSWORD") or os.environ.get("DB_PASSWORD")
-        mysql_database = os.environ.get("MYSQL_DATABASE") or os.environ.get("DB_NAME") or os.environ.get("RAILWAY_MYSQL_DATABASE")
+        # MySQL (Railway 常用变量名)
+        mysql_host = (
+            os.environ.get("MYSQL_HOST") or
+            os.environ.get("DB_HOST") or
+            os.environ.get("RAILWAY_MYSQL_HOST")
+        )
+        mysql_port = (
+            os.environ.get("MYSQL_PORT") or
+            os.environ.get("DB_PORT") or
+            "3306"
+        )
+        mysql_user = (
+            os.environ.get("MYSQL_USER") or
+            os.environ.get("DB_USER") or
+            os.environ.get("RAILWAY_MYSQL_USER")
+        )
+        mysql_password = (
+            os.environ.get("MYSQL_PASSWORD") or
+            os.environ.get("DB_PASSWORD") or
+            os.environ.get("RAILWAY_MYSQL_PASSWORD")
+        )
+        mysql_database = (
+            os.environ.get("MYSQL_DATABASE") or
+            os.environ.get("DB_NAME") or
+            os.environ.get("RAILWAY_MYSQL_DATABASE")
+        )
+        mysql_charset = os.environ.get("MYSQL_CHARSET") or "utf8mb4"
+
         # DeepSeek
         deepseek_api_key = os.environ.get("DEEPSEEK_API_KEY")
         deepseek_base_url = os.environ.get("DEEPSEEK_BASE_URL")
         deepseek_model = os.environ.get("DEEPSEEK_MODEL")
+
         # Polygon
         polygon_api_key = os.environ.get("POLYGON_API_KEY")
 
-        # 如果环境变量未提供，再使用 YAML 配置
+        # 如果环境变量未提供，再使用 YAML 配置（仅用于本地开发）
         if not mysql_host:
             mysql_cfg = _section(cfg, "mysql")
             mysql_host = mysql_cfg.get("host", "127.0.0.1")
@@ -78,6 +101,7 @@ class Settings:
             mysql_user = mysql_cfg.get("user", "root")
             mysql_password = mysql_cfg.get("password", "")
             mysql_database = mysql_cfg.get("database", "pokieticker")
+            mysql_charset = mysql_cfg.get("charset", "utf8mb4")
 
         if not deepseek_api_key:
             deepseek_cfg = _section(cfg, "deepseek")
@@ -102,7 +126,7 @@ class Settings:
             mysql_user=str(mysql_user or "root"),
             mysql_password=str(mysql_password or ""),
             mysql_database=str(mysql_database or "pokieticker"),
-            mysql_charset=str(mysql_cfg.get("charset", "utf8mb4") if 'mysql_cfg' in locals() else "utf8mb4"),
+            mysql_charset=str(mysql_charset or "utf8mb4"),
         )
 
     def validate_for_startup(self) -> list[str]:
