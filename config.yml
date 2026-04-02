@@ -1,0 +1,18 @@
+# PokieTicker 配置文件模板
+# 复制此文件为 config.yml 并填入你的 API 密钥
+
+# DeepSeek API (OpenAI 兼容接口)
+# 注册地址: https://platform.deepseek.com/
+deepseek:
+  api_key: "sk-143bc3ead4294a389f719989ba3d9b2d"
+  base_url: "https://api.deepseek.com"
+  model: "deepseek-reasoner"
+
+# MySQL 数据库
+mysql:
+  host: "127.0.0.1"
+  port: 3306
+  user: "root"
+  password: ""          # 空密码
+  database: "pokieticker"
+  charset: "utf8mb4"
