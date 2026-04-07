@@ -146,35 +146,64 @@ def _ts_code_to_eastmoney(ts_code: str) -> str:
 
 
 def fetch_ohlc(ts_code: str, start: str, end: str) -> List[Dict[str, Any]]:
-    """获取A股日线行情数据（使用 AkShare）。
+    """获取A股日线行情数据（使用 AkShare），带重试和多种代码格式自适应。
 
     Args:
-        ts_code: Tushare 股票代码，如 '000001.SZ'
+        ts_code: Tushare 股票代码，如 '000001.SZ' 或 '600331.SH'
         start: 开始日期 'YYYY-MM-DD'
         end: 结束日期 'YYYY-MM-DD'
 
     Returns:
         日线数据列表，字段与原 ohlc 表一致。
     """
-    symbol = _normalize_ts_code(ts_code)
-    # AkShare 日期格式要求 YYYYMMDD
-    start_fmt = start.replace("-", "")
+    symbol = _normalize_ts_code(ts_code)          # 纯数字，例如 "600331"
+    start_fmt = start.replace("-", "")            # YYYYMMDD
     end_fmt = end.replace("-", "")
 
-    try:
-        df = ak.stock_zh_a_hist(
-            symbol=symbol,
-            period="daily",
-            start_date=start_fmt,
-            end_date=end_fmt,
-            adjust="qfq",      # 前复权
-        )
-    except Exception as e:
-        logger.error("AkShare fetch_ohlc error for %s: %s", ts_code, e)
-        return []
+    # 构建可能的代码格式列表（优先级：原始数字 -> sh/sz前缀）
+    symbol_variants = [symbol]
+    if symbol.startswith('6') or symbol.startswith('9'):
+        symbol_variants.append(f"sh{symbol}")
+    elif symbol.startswith(('0', '3')):
+        symbol_variants.append(f"sz{symbol}")
+    else:
+        # 未知前缀，同时尝试 sh 和 sz
+        symbol_variants.extend([f"sh{symbol}", f"sz{symbol}"])
 
-    if df.empty:
-        logger.warning("AkShare fetch_ohlc returned empty for %s", ts_code)
+    max_retries = 3
+    df = None
+    for attempt in range(max_retries):
+        for sym in symbol_variants:
+            try:
+                df = ak.stock_zh_a_hist(
+                    symbol=sym,
+                    period="daily",
+                    start_date=start_fmt,
+                    end_date=end_fmt,
+                    adjust="qfq",
+                )
+                if not df.empty:
+                    # 成功获取数据，跳出所有循环
+                    break
+            except Exception as e:
+                logger.warning(f"Attempt {attempt+1} with {sym} failed: {e}")
+                continue
+        else:
+            # 所有 variants 都失败
+            if attempt < max_retries - 1:
+                wait = 2 ** attempt
+                logger.info(f"Retry {attempt+1} for {ts_code} after {wait}s")
+                time.sleep(wait)
+                continue
+            else:
+                logger.error(f"All attempts failed for {ts_code}")
+                return []
+
+        # 成功获取 df，跳出重试循环
+        break
+
+    if df is None or df.empty:
+        logger.warning(f"No OHLC data for {ts_code} after retries")
         return []
 
     # 列名映射
@@ -185,9 +214,9 @@ def fetch_ohlc(ts_code: str, start: str, end: str) -> List[Dict[str, Any]]:
             "最高": "high",
             "最低": "low",
             "收盘": "close",
-            "成交量": "volume",   # 单位：手（原 Tushare 也是手）
+            "成交量": "volume",   # 单位：手
             "成交额": "amount",   # 单位：元
-            "换手率": "turnover_rate",  # 百分比（如 2.5 表示 2.5%）
+            "换手率": "turnover_rate",  # 百分比
         },
         inplace=True,
     )
@@ -195,11 +224,8 @@ def fetch_ohlc(ts_code: str, start: str, end: str) -> List[Dict[str, Any]]:
     rows = []
     for _, row in df.iterrows():
         trade_date = row["trade_date"]
-        # 日期格式已是 YYYY-MM-DD
-        # 成交额单位：原 Tushare amount 为千元，这里为元，需除以 1000
         amount_yuan = _safe_float(row.get("amount"))
         amount_thousand = amount_yuan / 1000.0 if amount_yuan is not None else None
-        # 换手率单位：原 Tushare 为小数（如 0.025），AkShare 为百分比（2.5），需除以 100
         turnover_pct = _safe_float(row.get("turnover_rate"))
         turnover_ratio = turnover_pct / 100.0 if turnover_pct is not None else None
 
@@ -209,14 +235,15 @@ def fetch_ohlc(ts_code: str, start: str, end: str) -> List[Dict[str, Any]]:
             "high": float(row["high"]),
             "low": float(row["low"]),
             "close": float(row["close"]),
-            "volume": float(row["volume"]),          # 手
-            "vwap": amount_thousand,                 # 成交额（千元）
+            "volume": float(row["volume"]),
+            "vwap": amount_thousand,
             "turnover_rate": turnover_ratio,
-            "circ_mv": None,     # AkShare 不提供，特征工程会用 0 填充
+            "circ_mv": None,
             "total_mv": None,
             "transactions": None,
         })
 
+    logger.info(f"Fetched {len(rows)} OHLC rows for {ts_code}")
     return rows
 
 
@@ -272,10 +299,6 @@ def fetch_news(
     max_items: int = 200,
 ) -> List[Dict[str, Any]]:
     """获取个股新闻（通过东方财富资讯接口）—— 此部分完全保留原实现，未改动。"""
-    import logging
-    import requests as _requests
-    logger = logging.getLogger(__name__)
-
     m_type_and_code = _ts_code_to_eastmoney(ts_code)
     start_date = datetime.strptime(start, "%Y-%m-%d") if start else None
     end_date = datetime.strptime(end, "%Y-%m-%d") if end else None
@@ -322,10 +345,11 @@ def fetch_news(
             except ValueError:
                 continue
 
-            #if start_date and article_date < start_date:
-             #   continue
-            #if end_date and article_date > end_date:
-             #   continue
+            # 日期范围过滤（可选，目前注释）
+            # if start_date and article_date < start_date:
+            #     continue
+            # if end_date and article_date > end_date:
+            #     continue
 
             news_id = hashlib.md5(
                 f"{title}_{pub_time}_{url}".encode("utf-8")
