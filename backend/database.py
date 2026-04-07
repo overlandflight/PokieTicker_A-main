@@ -330,31 +330,73 @@ def init_db():
     if errors:
         raise RuntimeError("Cannot initialize database:\n- " + "\n- ".join(errors))
 
-    sql_path = PROJECT_ROOT / "init.sql"
-    if not sql_path.exists():
-        raise FileNotFoundError(f"init.sql not found at {sql_path}")
+    database_name = settings.mysql_database
 
-    # 先连接无数据库，确保数据库存在
-    conn = get_conn(database="")
+    # Step 1: Connect without a database and ensure the target database exists.
+    logger.info("Ensuring database '%s' exists...", database_name)
+    try:
+        conn = get_conn(database="")
+    except Exception as e:
+        logger.error("Failed to connect to MySQL server (no database): %s", e)
+        raise
+
     try:
         with conn.cursor() as cur:
-            sql_text = sql_path.read_text(encoding="utf-8")
-            for statement in split_sql_statements(sql_text):
-                stmt = statement.strip()
-                if stmt:
-                    try:
-                        cur.execute(stmt)
-                    except pymysql.err.OperationalError as e:
-                        # 忽略"已存在"类错误（如重复索引、重复表）
-                        if e.args[0] in (1061, 1050):
-                            pass
-                        else:
-                            raise
+            cur.execute(
+                f"CREATE DATABASE IF NOT EXISTS `{database_name}` "
+                f"DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+            )
         conn.commit()
+        logger.info("Database '%s' is ready.", database_name)
+    except Exception as e:
+        logger.error("Failed to create database '%s': %s", database_name, e)
+        raise
     finally:
         conn.close()
 
-    logger.info("Database '%s' initialized successfully.", settings.mysql_database)
+    # Step 2: Connect to the target database and execute init.sql.
+    sql_path = PROJECT_ROOT / "init.sql"
+    if not sql_path.exists():
+        logger.warning(
+            "init.sql not found at %s — skipping table initialisation.", sql_path
+        )
+        return
+
+    logger.info("Running init.sql against database '%s'...", database_name)
+    try:
+        conn = get_conn()
+    except Exception as e:
+        logger.error("Failed to connect to database '%s': %s", database_name, e)
+        raise
+
+    try:
+        sql_text = sql_path.read_text(encoding="utf-8")
+        with conn.cursor() as cur:
+            for statement in split_sql_statements(sql_text):
+                stmt = statement.strip()
+                if not stmt:
+                    continue
+                # Skip CREATE DATABASE / USE statements — already handled above.
+                upper = stmt.upper()
+                if upper.startswith("CREATE DATABASE") or upper.startswith("USE "):
+                    continue
+                try:
+                    cur.execute(stmt)
+                except pymysql.err.OperationalError as e:
+                    # Ignore "already exists" errors (duplicate index, duplicate table).
+                    if e.args[0] in (1061, 1050):
+                        logger.debug("Skipping already-existing object: %s", e)
+                    else:
+                        logger.error("Error executing statement: %s\n%s", stmt, e)
+                        raise
+        conn.commit()
+    except Exception as e:
+        logger.error("Failed to initialise tables in '%s': %s", database_name, e)
+        raise
+    finally:
+        conn.close()
+
+    logger.info("Database '%s' initialized successfully.", database_name)
 
 
 if __name__ == "__main__":
