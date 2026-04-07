@@ -9,9 +9,9 @@ from backend.database import (
     ensure_news_aligned_attribution_columns,
     ensure_ohlc_a_share_columns,
     ensure_ticker_alias_table,
+    init_db,
 )
 from backend.api.routers import stocks, news, analysis, predict, pipeline
-from backend.init_db import init_database   # 新增导入
 
 app = FastAPI(title="PokieTicker", version="1.0.0")
 
@@ -37,11 +37,7 @@ def startup():
     if errors:
         raise RuntimeError("Startup configuration invalid:\n- " + "\n- ".join(errors))
     check_db_connection()
-    
-    # 🔥 新增：自动执行 init.sql 建表（解决 Railway 部署时表缺失问题）
-    init_database()
-    
-    # 原有的列确保函数（不会与建表冲突，可保留）
+    init_db()  # 自动执行 init.sql 建表
     ensure_market_index_table()
     ensure_ohlc_a_share_columns()
     ensure_layer1_event_columns()
