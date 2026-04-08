@@ -1,6 +1,7 @@
-"""数据客户端：使用 AkShare 获取 A股行情，保留东方财富新闻接口。
+"""数据客户端：使用 Ashare 获取 A股行情，保留东方财富新闻接口。
 
-替代原 Tushare Pro 客户端，提供 A股日线数据、股票搜索等功能。
+替代原 AkShare 客户端，提供 A股日线数据、股票搜索等功能。
+Ashare 使用腾讯数据源，自动故障转移至新浪备用源，在 Railway 环境中稳定可靠。
 新闻获取仍使用原东方财富 API，不受影响。
 """
 
@@ -13,6 +14,7 @@ from typing import Any, Dict, List, Optional
 
 import requests as _requests
 import akshare as ak
+import Ashare as ashare
 import pandas as pd
 
 from backend.config import settings
@@ -128,8 +130,26 @@ def _safe_float(value: Any) -> Optional[float]:
 
 
 def _normalize_ts_code(ts_code: str) -> str:
-    """将 Tushare 格式代码转为纯数字代码，用于 AkShare 接口"""
+    """将 Tushare 格式代码转为纯数字代码"""
     return ts_code.split(".")[0]
+
+
+def _ts_code_to_ashare(ts_code: str) -> str:
+    """将 Tushare 格式代码转为 Ashare 格式代码。
+
+    Tushare 格式: '000001.SZ' / '000001.SH'
+    Ashare 格式:  '000001.XSHE' (深圳) / '000001.XSHG' (上海)
+    """
+    parts = ts_code.split(".")
+    if len(parts) == 2:
+        code, exchange = parts
+        suffix = "XSHG" if exchange.upper() == "SH" else "XSHE"
+        return f"{code}.{suffix}"
+    # 无后缀时按首位数字推断
+    code = ts_code.strip()
+    if code.startswith(("6", "9")):
+        return f"{code}.XSHG"
+    return f"{code}.XSHE"
 
 
 def _ts_code_to_eastmoney(ts_code: str) -> str:
@@ -146,7 +166,7 @@ def _ts_code_to_eastmoney(ts_code: str) -> str:
 
 
 def fetch_ohlc(ts_code: str, start: str, end: str) -> List[Dict[str, Any]]:
-    """获取A股日线行情数据（使用 AkShare）。
+    """获取A股日线行情数据（使用 Ashare，腾讯数据源，自动故障转移至新浪）。
 
     Args:
         ts_code: Tushare 股票代码，如 '000001.SZ'
@@ -156,67 +176,61 @@ def fetch_ohlc(ts_code: str, start: str, end: str) -> List[Dict[str, Any]]:
     Returns:
         日线数据列表，字段与原 ohlc 表一致。
     """
-    symbol = _normalize_ts_code(ts_code)
-    # AkShare 日期格式要求 YYYYMMDD
-    start_fmt = start.replace("-", "")
-    end_fmt = end.replace("-", "")
+    ashare_code = _ts_code_to_ashare(ts_code)
+    logger.info("Ashare fetch_ohlc: %s -> %s [%s, %s]", ts_code, ashare_code, start, end)
 
     try:
-        df = ak.stock_zh_a_hist(
-            symbol=symbol,
-            period="daily",
-            start_date=start_fmt,
-            end_date=end_fmt,
-            adjust="qfq",      # 前复权
+        df = ashare.get_price(
+            ashare_code,
+            start_date=start,
+            end_date=end,
+            frequency="1d",
+            fields=["open", "close", "high", "low", "volume"],
         )
     except Exception as e:
-        logger.error("AkShare fetch_ohlc error for %s: %s", ts_code, e)
+        logger.error("Ashare fetch_ohlc error for %s (%s): %s", ts_code, ashare_code, e)
         return []
 
-    if df.empty:
-        logger.warning("AkShare fetch_ohlc returned empty for %s", ts_code)
+    if df is None or df.empty:
+        logger.warning("Ashare fetch_ohlc returned empty for %s (%s)", ts_code, ashare_code)
         return []
 
-    # 列名映射
-    df.rename(
-        columns={
-            "日期": "trade_date",
-            "开盘": "open",
-            "最高": "high",
-            "最低": "low",
-            "收盘": "close",
-            "成交量": "volume",   # 单位：手（原 Tushare 也是手）
-            "成交额": "amount",   # 单位：元
-            "换手率": "turnover_rate",  # 百分比（如 2.5 表示 2.5%）
-        },
-        inplace=True,
-    )
+    # Ashare 返回的 DataFrame 以日期为索引（或含 date 列），列名为英文小写
+    # 统一将索引重置为 date 列
+    if "date" not in df.columns:
+        df = df.reset_index()
+        # 索引列可能叫 'index' 或 'date'，统一重命名
+        if "index" in df.columns:
+            df.rename(columns={"index": "date"}, inplace=True)
+
+    # 确保日期列为字符串 YYYY-MM-DD
+    df["date"] = pd.to_datetime(df["date"]).dt.strftime("%Y-%m-%d")
+
+    # 按日期过滤（Ashare 内部已过滤，此处作为保险）
+    df = df[(df["date"] >= start) & (df["date"] <= end)].copy()
+    df = df.sort_values("date").reset_index(drop=True)
 
     rows = []
     for _, row in df.iterrows():
-        trade_date = row["trade_date"]
-        # 日期格式已是 YYYY-MM-DD
-        # 成交额单位：原 Tushare amount 为千元，这里为元，需除以 1000
-        amount_yuan = _safe_float(row.get("amount"))
-        amount_thousand = amount_yuan / 1000.0 if amount_yuan is not None else None
-        # 换手率单位：原 Tushare 为小数（如 0.025），AkShare 为百分比（2.5），需除以 100
-        turnover_pct = _safe_float(row.get("turnover_rate"))
-        turnover_ratio = turnover_pct / 100.0 if turnover_pct is not None else None
+        # volume: Ashare 返回单位为股，转换为手（除以 100）
+        raw_volume = _safe_float(row.get("volume"))
+        volume_hands = raw_volume / 100.0 if raw_volume is not None else None
 
         rows.append({
-            "date": trade_date,
-            "open": float(row["open"]),
-            "high": float(row["high"]),
-            "low": float(row["low"]),
-            "close": float(row["close"]),
-            "volume": float(row["volume"]),          # 手
-            "vwap": amount_thousand,                 # 成交额（千元）
-            "turnover_rate": turnover_ratio,
-            "circ_mv": None,     # AkShare 不提供，特征工程会用 0 填充
-            "total_mv": None,
-            "transactions": None,
+            "date": row["date"],
+            "open": _safe_float(row.get("open")),
+            "high": _safe_float(row.get("high")),
+            "low": _safe_float(row.get("low")),
+            "close": _safe_float(row.get("close")),
+            "volume": volume_hands,                  # 手
+            "vwap": None,                            # Ashare 不提供成交额，特征工程会用 0 填充
+            "turnover_rate": None,                   # Ashare 不提供换手率
+            "circ_mv": None,                         # Ashare 不提供流通市值
+            "total_mv": None,                        # Ashare 不提供总市值
+            "transactions": None,                    # Ashare 不提供成交笔数
         })
 
+    logger.info("Ashare fetch_ohlc: fetched %d rows for %s", len(rows), ts_code)
     return rows
 
 
