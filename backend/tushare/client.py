@@ -146,7 +146,7 @@ def _ts_code_to_eastmoney(ts_code: str) -> str:
 
 
 def fetch_ohlc(ts_code: str, start: str, end: str) -> List[Dict[str, Any]]:
-    """获取A股日线行情数据（使用 AkShare）。
+    """获取A股日线行情数据（使用 AkShare），带重试机制。
 
     Args:
         ts_code: Tushare 股票代码，如 '000001.SZ'
@@ -161,20 +161,31 @@ def fetch_ohlc(ts_code: str, start: str, end: str) -> List[Dict[str, Any]]:
     start_fmt = start.replace("-", "")
     end_fmt = end.replace("-", "")
 
-    try:
-        df = ak.stock_zh_a_hist(
-            symbol=symbol,
-            period="daily",
-            start_date=start_fmt,
-            end_date=end_fmt,
-            adjust="qfq",      # 前复权
-        )
-    except Exception as e:
-        logger.error("AkShare fetch_ohlc error for %s: %s", ts_code, e)
-        return []
-
-    if df.empty:
-        logger.warning("AkShare fetch_ohlc returned empty for %s", ts_code)
+    max_retries = 3
+    df = None
+    for attempt in range(1, max_retries + 1):
+        try:
+            logger.debug(f"Fetching OHLC for {ts_code} (attempt {attempt}): symbol={symbol}, start={start_fmt}, end={end_fmt}")
+            df = ak.stock_zh_a_hist(
+                symbol=symbol,
+                period="daily",
+                start_date=start_fmt,
+                end_date=end_fmt,
+                adjust="qfq",      # 前复权
+            )
+            if df is not None and not df.empty:
+                logger.info(f"Successfully fetched {len(df)} rows for {ts_code}")
+                break
+            else:
+                logger.warning(f"Attempt {attempt}: AkShare returned empty DataFrame for {ts_code}")
+                if attempt < max_retries:
+                    time.sleep(2)
+        except Exception as e:
+            logger.error(f"Attempt {attempt}: AkShare fetch_ohlc error for {ts_code}: {e}")
+            if attempt < max_retries:
+                time.sleep(2)
+    else:
+        logger.error(f"All {max_retries} attempts failed for {ts_code}")
         return []
 
     # 列名映射
